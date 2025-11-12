@@ -12,8 +12,9 @@ const JoinEvent = () => {
       const fetchJoinedEvents = async () => {
           if(!user?.email) return;
           try {
-             const res = await axios.get(`http://localhost:3000/joinedEvents?email=${user.email}`);
-             setJoinedEvents(res.data);
+              //const res = await axios.get(`http://localhost:3000/joinedEvents?email=${user.email}`);
+              const res = await axios.get(`https://eventify-server-sigma.vercel.app/joinedEvents?email=${user.email}`);  
+              setJoinedEvents(res.data);
           } 
           catch (error) {
              console.error("Error fetching joined events:", error);

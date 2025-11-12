@@ -24,7 +24,7 @@ const ManageEvents = () => {
     const fetchMyEvents = async () => {
         if(!user?.email) return;
         try {
-          const res = await axios.get(`http://localhost:3000/myEvents?email=${user.email}`);
+          const res = await axios.get(`http://eventify-server-sigma.vercel.app/myEvents?email=${user.email}`);
           setMyEvents(res.data);
         } 
         catch (error) {

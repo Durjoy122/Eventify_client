@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import DatePicker from "react-datepicker";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
-import { useContext } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
 import Logo from '../assets/logo.jpg';
 
@@ -17,11 +16,12 @@ const CreateEvent = () => {
   const [thumbnail, setThumbnail] = useState("");
   const [location, setLocation] = useState("");
   const [eventDate, setEventDate] = useState(null);
+
   if(!user?.email) {
     Swal.fire({
-        icon: "warning",
-        title: "Login Required",
-        text: "You must be logged in to create an event."
+      icon: "warning",
+      title: "Login Required",
+      text: "You must be logged in to create an event."
     });
     return null;
   }
@@ -30,150 +30,151 @@ const CreateEvent = () => {
     e.preventDefault();
     const today = new Date();
     if(!eventDate || eventDate < today) {
-       Swal.fire({
-          icon: "error",
-          title: "Invalid Date",
-          text: "Please select a future date!",
-       });
-       return;
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Date",
+        text: "Please select a future date!",
+      });
+      return;
     }
 
-   const newEvent = {
-        title,
-        description,
-        eventType,
-        thumbnail,
-        location,
-        eventDate,
-        userEmail: user.email, 
+    const newEvent = {
+      title,
+      description,
+      eventType,
+      thumbnail,
+      location,
+      eventDate,
+      userEmail: user.email, 
     };
 
     try {
-        const res = await axios.post("http://localhost:3000/events", newEvent);
-        if(res.data.insertedId || res.status === 201) {
-            Swal.fire({
-                icon: "success",
-                title: "Event Created",
-                text: "Your event has been created successfully!",
-            })
-            .then(() => navigate("/upcoming"));
-        }
-    } 
-    catch (error) {
+      const res = await axios.post("http://eventify-server-sigma.vercel.app/events", newEvent);
+      if(res.data.insertedId || res.status === 201) {
         Swal.fire({
-            icon: "error",
-            title: "Failed",
-            text: `Something went wrong. Please try again. ${error.message}`,
-        });
-     }
+          icon: "success",
+          title: "Event Created",
+          text: "Your event has been created successfully!",
+        }).then(() => navigate("/upcoming"));
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Failed",
+        text: `Something went wrong. Please try again. ${error.message}`,
+      });
+    }
   };
 
   return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-green-50 p-6">
-        <div className="bg-white shadow-2xl rounded-2xl w-full max-w-3xl p-10 transition-all duration-300 hover:shadow-3xl">
-            {/* Logo */}
-            <div className="flex flex-col items-center mb-8">
-                <img
-                    src={Logo}
-                    alt="Logo"
-                    className="w-24 h-24 rounded-full object-cover mb-4 shadow-md border-2 border-gray-200"
-                />
-                <h2 className="text-3xl font-extrabold text-gray-800 mb-2">Create Event</h2>
-                <p className="text-gray-600 text-center max-w-md">
-                    Fill in the details below to create your event. Only future dates are allowed.
-                </p>
-            </div>
-
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Event Title */}
-                <div>
-                    <label className="block text-gray-700 font-medium mb-2">Event Title</label>
-                    <input
-                        type="text"
-                        placeholder="Enter your event title"
-                        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        required
-                    />
-                </div>
-
-                {/* Description */}
-                <div>
-                    <label className="block text-gray-700 font-medium mb-2">Description</label>
-                    <textarea
-                        placeholder="Briefly describe your event..."
-                        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition resize-none"
-                        rows="4"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        required
-                    />
-                </div>
-
-                {/* Event Type */}
-                <div>
-                    <label className="block text-gray-700 font-medium mb-2">Event Type</label>
-                    <select
-                        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
-                        value={eventType}
-                        onChange={(e) => setEventType(e.target.value)}
-                        required
-                    >
-                    <option value="">Select Event Type</option>
-                    <option value="Cleanup">Cleanup</option>
-                    <option value="Plantation">Plantation</option>
-                    <option value="Donation">Donation</option>
-                    </select>
-                </div>
-
-                {/* Thumbnail URL */}
-                <div>
-                    <label className="block text-gray-700 font-medium mb-2">Thumbnail Image URL</label>
-                    <input
-                        type="text"
-                        placeholder="Enter image URL"
-                        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
-                        value={thumbnail}
-                        onChange={(e) => setThumbnail(e.target.value)}
-                        required
-                    />
-                </div>
-
-                {/* Location */}
-                <div>
-                        <label className="block text-gray-700 font-medium mb-2">Location</label>
-                        <input
-                            type="text"
-                            placeholder="Event location"
-                            className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                            required
-                        />
-                </div>
-
-                {/* Date */}
-                <div>
-                    <label className="block text-gray-700 font-medium mb-2">Event Date</label>
-                    <DatePicker
-                        className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
-                        selected={eventDate}
-                        onChange={(date) => setEventDate(date)}
-                        minDate={new Date()}
-                        placeholderText="Select event date"
-                        required
-                    />
-                </div>
-
-                {/* Submit Button */}
-                <button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:shadow-lg transition-all duration-300">
-                    Create Event
-                </button>
-            </form>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-green-50 dark:from-gray-900 dark:to-gray-800 p-6 transition-colors duration-300">
+      <div className="bg-white dark:bg-gray-800 shadow-2xl dark:shadow-gray-700 rounded-2xl w-full max-w-3xl p-10 transition-all duration-300 hover:shadow-3xl dark:hover:shadow-gray-600">
+        {/* Logo */}
+        <div className="flex flex-col items-center mb-8">
+          <img
+            src={Logo}
+            alt="Logo"
+            className="w-24 h-24 rounded-full object-cover mb-4 shadow-md dark:shadow-gray-700 border-2 border-gray-200 dark:border-gray-600"
+          />
+          <h2 className="text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-2">Create Event</h2>
+          <p className="text-gray-600 dark:text-gray-300 text-center max-w-md">
+            Fill in the details below to create your event. Only future dates are allowed.
+          </p>
         </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Event Title */}
+          <div>
+            <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Event Title</label>
+            <input
+              type="text"
+              placeholder="Enter your event title"
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 dark:bg-gray-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Description</label>
+            <textarea
+              placeholder="Briefly describe your event..."
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 dark:bg-gray-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition resize-none"
+              rows="4"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Event Type */}
+          <div>
+            <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Event Type</label>
+            <select
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 dark:bg-gray-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
+              value={eventType}
+              onChange={(e) => setEventType(e.target.value)}
+              required
+            >
+              <option value="">Select Event Type</option>
+              <option value="Cleanup">Cleanup</option>
+              <option value="Plantation">Plantation</option>
+              <option value="Donation">Donation</option>
+            </select>
+          </div>
+
+          {/* Thumbnail URL */}
+          <div>
+            <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Thumbnail Image URL</label>
+            <input
+              type="text"
+              placeholder="Enter image URL"
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 dark:bg-gray-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
+              value={thumbnail}
+              onChange={(e) => setThumbnail(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Location */}
+          <div>
+            <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Location</label>
+            <input
+              type="text"
+              placeholder="Event location"
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 dark:bg-gray-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Date */}
+          <div>
+            <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Event Date</label>
+            <DatePicker
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 dark:bg-gray-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
+              selected={eventDate}
+              onChange={(date) => setEventDate(date)}
+              minDate={new Date()}
+              placeholderText="Select event date"
+              required
+            />
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:shadow-lg dark:shadow-gray-700 dark:hover:shadow-gray-600 transition-all duration-300"
+          >
+            Create Event
+          </button>
+        </form>
       </div>
+    </div>
   );
 };
 
