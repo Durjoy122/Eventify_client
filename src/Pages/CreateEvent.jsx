@@ -5,12 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import { AuthContext } from "../Provider/AuthProvider";
 import Logo from '../assets/logo.jpg';
-import axios from "axios";
-
-// Axios instance
-const api = axios.create({
-  baseURL: "https://eventify-server-sigma.vercel.app", // HTTPS backend
-});
+import api from "../api"; // <-- Use the HTTPS Axios instance
 
 const CreateEvent = () => {
   const navigate = useNavigate();
@@ -35,8 +30,7 @@ const CreateEvent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const today = new Date();
-    if (!eventDate || eventDate < today) {
+    if (!eventDate || eventDate < new Date()) {
       Swal.fire({
         icon: "error",
         title: "Invalid Date",
@@ -56,7 +50,7 @@ const CreateEvent = () => {
     };
 
     try {
-      const res = await api.post("/events", newEvent);
+      const res = await api.post("/events", newEvent); // <-- HTTPS Axios
 
       if (res.data.insertedId || res.status === 201) {
         Swal.fire({
@@ -74,24 +68,22 @@ const CreateEvent = () => {
     }
   };
 
+  // -------------------------
+  // Keep your original layout exactly as it was
+  // -------------------------
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-green-50 dark:from-gray-900 dark:to-gray-800 p-6 transition-colors duration-300">
       <div className="bg-white dark:bg-gray-800 shadow-2xl dark:shadow-gray-700 rounded-2xl w-full max-w-3xl p-10 transition-all duration-300 hover:shadow-3xl dark:hover:shadow-gray-600">
-        {/* Logo */}
         <div className="flex flex-col items-center mb-8">
-          <img
-            src={Logo}
-            alt="Logo"
-            className="w-24 h-24 rounded-full object-cover mb-4 shadow-md dark:shadow-gray-700 border-2 border-gray-200 dark:border-gray-600"
-          />
+          <img src={Logo} alt="Logo" className="w-24 h-24 rounded-full object-cover mb-4 shadow-md dark:shadow-gray-700 border-2 border-gray-200 dark:border-gray-600"/>
           <h2 className="text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-2">Create Event</h2>
           <p className="text-gray-600 dark:text-gray-300 text-center max-w-md">
             Fill in the details below to create your event. Only future dates are allowed.
           </p>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Event Title */}
           <div>
             <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Event Title</label>
             <input
@@ -104,6 +96,7 @@ const CreateEvent = () => {
             />
           </div>
 
+          {/* Description */}
           <div>
             <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Description</label>
             <textarea
@@ -116,6 +109,7 @@ const CreateEvent = () => {
             />
           </div>
 
+          {/* Event Type */}
           <div>
             <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Event Type</label>
             <select
@@ -131,6 +125,7 @@ const CreateEvent = () => {
             </select>
           </div>
 
+          {/* Thumbnail */}
           <div>
             <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Thumbnail Image URL</label>
             <input
@@ -143,6 +138,7 @@ const CreateEvent = () => {
             />
           </div>
 
+          {/* Location */}
           <div>
             <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Location</label>
             <input
@@ -155,6 +151,7 @@ const CreateEvent = () => {
             />
           </div>
 
+          {/* Date Picker */}
           <div>
             <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Event Date</label>
             <DatePicker
