@@ -187,63 +187,50 @@ const ManageEvents = () => {
               required
             />
 
-            <select
-              className="select select-bordered w-full dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
-              value={formData.eventType}
-              onChange={(e) =>
-                setFormData({ ...formData, eventType: e.target.value })
-              }
-              required
-            >
-              <option value="Cleanup">Cleanup</option>
-              <option value="Plantation">Plantation</option>
-              <option value="Donation">Donation</option>
+            <select className="select select-bordered w-full dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                value={formData.eventType}
+                onChange={(e) =>
+                  setFormData({ ...formData, eventType: e.target.value })
+                }
+                required
+              >
+                <option value="Cleanup">Cleanup</option>
+                <option value="Plantation">Plantation</option>
+                <option value="Donation">Donation</option>
             </select>
 
             <input
-              type="text"
-              placeholder="Thumbnail URL"
-              className="input input-bordered w-full dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
-              value={formData.thumbnail || ""}
-              onChange={(e) =>
-                setFormData({ ...formData, thumbnail: e.target.value })
-              }
-              required
+                type="text"
+                placeholder="Thumbnail URL"
+                className="input input-bordered w-full dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                value={formData.thumbnail || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, thumbnail: e.target.value })
+                }
+                required
             />
 
             <input
-              type="text"
-              placeholder="Location"
-              className="input input-bordered w-full dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
-              value={formData.location}
-              onChange={(e) =>
-                setFormData({ ...formData, location: e.target.value })
-              }
-              required
+                type="text"
+                placeholder="Location"
+                className="input input-bordered w-full dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                value={formData.location}
+                onChange={(e) =>
+                  setFormData({ ...formData, location: e.target.value })
+                }
+                required
             />
 
-            <DatePicker
-              selected={formData.eventDate}
-              onChange={(date) => setFormData({ ...formData, eventDate: date })}
-              className="input input-bordered w-full dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
-              minDate={new Date()}
-              required
+            <DatePicker selected={formData.eventDate}
+                onChange={(date) => setFormData({ ...formData, eventDate: date })}
+                className="input input-bordered w-full dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
+                minDate={new Date()}
+                required
             />
 
             <div className="modal-action">
-              <button
-                type="submit"
-                className="btn bg-blue-600 hover:bg-blue-700 text-white"
-              >
-                Save Changes
-              </button>
-              <button
-                type="button"
-                onClick={() => document.getElementById("edit_modal").close()}
-                className="btn"
-              >
-                Cancel
-              </button>
+              <button type="submit" className="btn bg-blue-600 hover:bg-blue-700 text-white">Save Changes</button>
+              <button type="button" onClick={() => document.getElementById("edit_modal").close()} className="btn">Cancel</button>
             </div>
           </form>
         </div>
