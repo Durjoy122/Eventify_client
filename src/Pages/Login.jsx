@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import axios from "axios";
 
 const Login = () => {
@@ -17,13 +17,14 @@ const Login = () => {
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
+
     signIn(email, password)
       .then(() => {
         Swal.fire({
-          title: 'Success!',
-          text: 'Logged in successfully.',
-          icon: 'success',
-          confirmButtonText: 'OK'
+          title: "Success!",
+          text: "Logged in successfully.",
+          icon: "success",
+          confirmButtonText: "OK",
         });
         setError("");
         form.reset();
@@ -39,18 +40,18 @@ const Login = () => {
     resetPassword(email)
       .then(() => {
         Swal.fire({
-          title: 'Success!',
-          text: 'Password reset email sent!',
-          icon: 'success',
-          confirmButtonText: 'OK'
+          title: "Success!",
+          text: "Password reset email sent!",
+          icon: "success",
+          confirmButtonText: "OK",
         });
       })
       .catch((err) => {
         Swal.fire({
-          title: 'Error!',
+          title: "Error!",
           text: err.message,
-          icon: 'error',
-          confirmButtonText: 'OK'
+          icon: "error",
+          confirmButtonText: "OK",
         });
       });
   };
@@ -65,45 +66,55 @@ const Login = () => {
           photoURL: loggedUser.photoURL,
         };
 
-        axios.post("http://eventify-server-sigma.vercel.app/users", newUser)
+        // Use HTTPS and handle errors properly
+        axios
+          .post("https://eventify-server-sigma.vercel.app/users", newUser)
           .then(() => {
             Swal.fire({
-              title: 'Success!',
-              text: 'Logged in with Google!',
-              icon: 'success',
-              confirmButtonText: 'OK'
+              title: "Success!",
+              text: "Logged in with Google!",
+              icon: "success",
+              confirmButtonText: "OK",
             });
-            navigate(location.state?.from || "/");
           })
           .catch((err) => {
             console.error("Error saving user:", err);
             Swal.fire({
-              title: 'Error!',
-              text: 'Failed to save user data.',
-              icon: 'error',
-              confirmButtonText: 'OK'
+              title: "Error!",
+              text: "Failed to save user data.",
+              icon: "error",
+              confirmButtonText: "OK",
             });
+          })
+          .finally(() => {
+            // Navigate even if saving user fails
+            navigate(location.state?.from || "/");
           });
       })
       .catch((error) => {
         Swal.fire({
-          title: 'Error!',
+          title: "Error!",
           text: error.message,
-          icon: 'error',
-          confirmButtonText: 'OK'
+          icon: "error",
+          confirmButtonText: "OK",
         });
       });
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-green-50 to-blue-100 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300"> {/* Dark mode background */}
-      <form onSubmit={handleLogin} className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg w-96 transition-transform transform hover:scale-[1.02]">
-        <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-100 mb-6"> {/* Dark mode text */}
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-green-50 to-blue-100 dark:from-gray-800 dark:to-gray-900 transition-colors duration-300">
+      <form
+        onSubmit={handleLogin}
+        className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg w-96 transition-transform transform hover:scale-[1.02]"
+      >
+        <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-100 mb-6">
           Login
         </h2>
 
         <div className="mb-5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Email
+          </label>
           <input
             name="email"
             type="email"
@@ -117,7 +128,9 @@ const Login = () => {
         </div>
 
         <div className="mb-5 relative">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Password
+          </label>
           <input
             name="password"
             type={showPassword ? "text" : "password"}
@@ -155,7 +168,7 @@ const Login = () => {
         {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
         <div className="flex items-center my-5">
-          <div className="flex-grow h-px bg-gray-300 dark:bg-gray-600"></div> {/* Dark separator */}
+          <div className="flex-grow h-px bg-gray-300 dark:bg-gray-600"></div>
           <span className="px-3 text-gray-500 dark:text-gray-300 text-sm">or</span>
           <div className="flex-grow h-px bg-gray-300 dark:bg-gray-600"></div>
         </div>
@@ -175,7 +188,7 @@ const Login = () => {
         </button>
 
         <p className="text-center text-gray-600 dark:text-gray-300 mt-6 text-sm">
-          Don’t have an account?{" "}
+             Don’t have an account?{" "}
           <Link
             to="/auth/register"
             className="text-blue-600 dark:text-blue-400 font-medium hover:underline"
