@@ -15,21 +15,22 @@ const ManageEvents = () => {
   // For modal
   const [editingEvent, setEditingEvent] = useState(null);
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    eventType: "",
-    location: "",
-    eventDate: new Date(),
-    thumbnail: "",
+      title: "",
+      description: "",
+      eventType: "",
+      location: "",
+      eventDate: new Date(),
+      thumbnail: "",
   });
 
   const fetchMyEvents = async () => {
-    if (!user?.email) return;
+    if(!user?.email) return;
     try {
-      const res = await axios.get(`${BASE_URL}/myEvents?email=${user.email}`);
-      setMyEvents(res.data);
-    } catch (error) {
-      console.error("Error fetching events:", error);
+        const res = await axios.get(`${BASE_URL}/myEvents?email=${user.email}`);
+        setMyEvents(res.data);
+    } 
+    catch (error) {
+       console.error("Error fetching events:", error);
     }
   };
 
@@ -77,19 +78,20 @@ const ManageEvents = () => {
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`${BASE_URL}/events/${editingEvent._id}`, {
-        ...formData,
-        userEmail: user.email,
-      });
-      Swal.fire("Updated!", "Event has been updated successfully.", "success");
-      document.getElementById("edit_modal").close();
-      fetchMyEvents();
-    } catch (error) {
-      Swal.fire(
-        "Error!",
-        error.response?.data?.message || error.message,
-        "error"
-      );
+        await axios.put(`${BASE_URL}/events/${editingEvent._id}`, {
+            ...formData,
+            userEmail: user.email,
+        });
+        Swal.fire("Updated!", "Event has been updated successfully.", "success");
+        document.getElementById("edit_modal").close();
+        fetchMyEvents();
+    } 
+    catch (error) {
+        Swal.fire(
+          "Error!",
+          error.response?.data?.message || error.message,
+          "error"
+        );
     }
   };
 
