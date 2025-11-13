@@ -14,14 +14,16 @@ const UpComingEvent = () => {
   const fetchEvents = async (searchText = "", selectedType = "All") => {
     setLoading(true);
     try {
-      const res = await axios.get("http://eventify-server-sigma.vercel.app/events", {
-           params: { search: searchText, type: selectedType },
-      });
-      setEvents(res.data);
-    } catch (error) {
-      console.error("Failed to fetch events:", error);
-    } finally {
-      setLoading(false);
+        const res = await axios.get("https://eventify-server-sigma.vercel.app/events", {
+          params: { search: searchText, type: selectedType },
+        });
+        setEvents(res.data);
+    } 
+    catch (error) {
+        console.error("Failed to fetch events:", error);
+    } 
+    finally {
+        setLoading(false);
     }
   };
 
