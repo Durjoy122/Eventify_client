@@ -1,15 +1,21 @@
 import React, { useState, useContext } from "react";
 import DatePicker from "react-datepicker";
 import Swal from "sweetalert2";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import { AuthContext } from "../Provider/AuthProvider";
 import Logo from '../assets/logo.jpg';
+import axios from "axios";
+
+// Axios instance
+const api = axios.create({
+  baseURL: "https://eventify-server-sigma.vercel.app", // HTTPS backend
+});
 
 const CreateEvent = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [eventType, setEventType] = useState("");
@@ -17,7 +23,7 @@ const CreateEvent = () => {
   const [location, setLocation] = useState("");
   const [eventDate, setEventDate] = useState(null);
 
-  if(!user?.email) {
+  if (!user?.email) {
     Swal.fire({
       icon: "warning",
       title: "Login Required",
@@ -28,8 +34,9 @@ const CreateEvent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const today = new Date();
-    if(!eventDate || eventDate < today) {
+    if (!eventDate || eventDate < today) {
       Swal.fire({
         icon: "error",
         title: "Invalid Date",
@@ -45,26 +52,26 @@ const CreateEvent = () => {
       thumbnail,
       location,
       eventDate,
-      userEmail: user.email, 
+      userEmail: user.email,
     };
 
     try {
-      const res = await axios.post("http://eventify-server-sigma.vercel.app/events", newEvent);
-      if(res.data.insertedId || res.status === 201) {
+      const res = await api.post("/events", newEvent);
+
+      if (res.data.insertedId || res.status === 201) {
         Swal.fire({
-            icon: "success",
-            title: "Event Created",
-            text: "Your event has been created successfully!",
-          }).then(() => navigate("/upcoming"));
-        }
-    } 
-    catch (error) {
-        Swal.fire({
-          icon: "error",
-          title: "Failed",
-          text: `Something went wrong. Please try again. ${error.message}`,
-        });
-     }
+          icon: "success",
+          title: "Event Created",
+          text: "Your event has been created successfully!",
+        }).then(() => navigate("/upcoming"));
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Failed",
+        text: `Something went wrong. Please try again. ${error.message}`,
+      });
+    }
   };
 
   return (
@@ -85,7 +92,6 @@ const CreateEvent = () => {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Event Title */}
           <div>
             <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Event Title</label>
             <input
@@ -98,7 +104,6 @@ const CreateEvent = () => {
             />
           </div>
 
-          {/* Description */}
           <div>
             <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Description</label>
             <textarea
@@ -111,7 +116,6 @@ const CreateEvent = () => {
             />
           </div>
 
-          {/* Event Type */}
           <div>
             <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Event Type</label>
             <select
@@ -127,7 +131,6 @@ const CreateEvent = () => {
             </select>
           </div>
 
-          {/* Thumbnail URL */}
           <div>
             <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Thumbnail Image URL</label>
             <input
@@ -140,7 +143,6 @@ const CreateEvent = () => {
             />
           </div>
 
-          {/* Location */}
           <div>
             <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Location</label>
             <input
@@ -153,7 +155,6 @@ const CreateEvent = () => {
             />
           </div>
 
-          {/* Date */}
           <div>
             <label className="block text-gray-700 dark:text-gray-200 font-medium mb-2">Event Date</label>
             <DatePicker
@@ -166,8 +167,8 @@ const CreateEvent = () => {
             />
           </div>
 
-          {/* Submit Button */}
-          <button type="submit"
+          <button
+            type="submit"
             className="w-full bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:shadow-lg dark:shadow-gray-700 dark:hover:shadow-gray-600 transition-all duration-300"
           >
             Create Event

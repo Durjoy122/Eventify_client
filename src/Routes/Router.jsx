@@ -49,7 +49,7 @@ const router = createBrowserRouter([
             ,
             {
                 path: 'eventDetails/:id',
-                loader: ({params}) => fetch(`http://eventify-server-sigma.vercel.app/events/${params.id}`),
+                loader: ({ params }) => fetch(`https://eventify-server-sigma.vercel.app/events/${params.id}`),
                 element: <PrivateRoute><EventDetails /></PrivateRoute>
             },
         ], 
