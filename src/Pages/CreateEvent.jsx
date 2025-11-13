@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import { AuthContext } from "../Provider/AuthProvider";
 import Logo from '../assets/logo.jpg';
-import api from "../api"; // <-- Use the HTTPS Axios instance
+import api from "../api"; 
 
 const CreateEvent = () => {
   const navigate = useNavigate();
@@ -164,8 +164,7 @@ const CreateEvent = () => {
             />
           </div>
 
-          <button
-            type="submit"
+          <button type="submit"
             className="w-full bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:shadow-lg dark:shadow-gray-700 dark:hover:shadow-gray-600 transition-all duration-300"
           >
             Create Event
