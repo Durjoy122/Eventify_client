@@ -20,7 +20,7 @@ const EventDetails = () => {
         }
 
         try {
-            const res = await axios.post("http://localhost:3000/joinEvent", {
+            const res = await axios.post("http://eventify-server-sigma.vercel.app/joinEvent", {
                 eventId: event._id,
                 user: {
                     name: user.displayName,

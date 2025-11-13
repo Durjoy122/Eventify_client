@@ -49,7 +49,7 @@ const CreateEvent = () => {
     };
 
     try {
-      const res = await axios.post("http://localhost:3000/events", newEvent);
+      const res = await axios.post("http://eventify-server-sigma.vercel.app/events", newEvent);
       if(res.data.insertedId || res.status === 201) {
         Swal.fire({
             icon: "success",

@@ -15,7 +15,7 @@ const UpComingEvent = () => {
     setLoading(true);
     try {
       const res = await axios.get("http://eventify-server-sigma.vercel.app/events", {
-        params: { search: searchText, type: selectedType },
+           params: { search: searchText, type: selectedType },
       });
       setEvents(res.data);
     } catch (error) {
