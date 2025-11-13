@@ -20,15 +20,15 @@ const Login = () => {
 
     signIn(email, password)
       .then(() => {
-        Swal.fire({
-          title: "Success!",
-          text: "Logged in successfully.",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
-        setError("");
-        form.reset();
-        navigate(location.state?.from || "/");
+          Swal.fire({
+            title: "Success!",
+            text: "Logged in successfully.",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+          setError("");
+          form.reset();
+          navigate(location.state?.from || "/");
       })
       .catch((error) => setError(error.message));
   };
@@ -39,20 +39,20 @@ const Login = () => {
 
     resetPassword(email)
       .then(() => {
-        Swal.fire({
-          title: "Success!",
-          text: "Password reset email sent!",
-          icon: "success",
-          confirmButtonText: "OK",
-        });
+          Swal.fire({
+              title: "Success!",
+              text: "Password reset email sent!",
+              icon: "success",
+              confirmButtonText: "OK",
+          });
       })
       .catch((err) => {
-        Swal.fire({
-          title: "Error!",
-          text: err.message,
-          icon: "error",
-          confirmButtonText: "OK",
-        });
+          Swal.fire({
+              title: "Error!",
+              text: err.message,
+              icon: "error",
+              confirmButtonText: "OK",
+          });
       });
   };
 
@@ -66,38 +66,35 @@ const Login = () => {
           photoURL: loggedUser.photoURL,
         };
 
-        // Use HTTPS and handle errors properly
-        axios
-          .post("https://eventify-server-sigma.vercel.app/users", newUser)
+        axios.post("https://eventify-server-sigma.vercel.app/users", newUser)
           .then(() => {
             Swal.fire({
-              title: "Success!",
-              text: "Logged in with Google!",
-              icon: "success",
-              confirmButtonText: "OK",
+                title: "Success!",
+                text: "Logged in with Google!",
+                icon: "success",
+                confirmButtonText: "OK",
             });
           })
           .catch((err) => {
             console.error("Error saving user:", err);
             Swal.fire({
-              title: "Error!",
-              text: "Failed to save user data.",
-              icon: "error",
-              confirmButtonText: "OK",
+                title: "Error!",
+                text: "Failed to save user data.",
+                icon: "error",
+                confirmButtonText: "OK",
             });
           })
           .finally(() => {
-            // Navigate even if saving user fails
-            navigate(location.state?.from || "/");
+              navigate(location.state?.from || "/");
           });
       })
       .catch((error) => {
-        Swal.fire({
-          title: "Error!",
-          text: error.message,
-          icon: "error",
-          confirmButtonText: "OK",
-        });
+          Swal.fire({
+              title: "Error!",
+              text: error.message,
+              icon: "error",
+              confirmButtonText: "OK",
+          });
       });
   };
 
@@ -141,20 +138,13 @@ const Login = () => {
                        transition duration-200 pr-10"
             required
           />
-          <span
-            onClick={() => setShowPassword(!showPassword)}
+          <span onClick={() => setShowPassword(!showPassword)}
             className="absolute right-3 top-[2.7rem] text-gray-500 dark:text-gray-300 cursor-pointer hover:text-gray-700 dark:hover:text-gray-100"
           >
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
+             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </span>
           <div className="text-right mt-1">
-            <button
-              type="button"
-              onClick={handleForgotPassword}
-              className="text-sm text-green-600 hover:underline"
-            >
-              Forgot Password?
-            </button>
+             <button type="button" onClick={handleForgotPassword} className="text-sm text-green-600 hover:underline">Forgot Password?</button>
           </div>
         </div>
 

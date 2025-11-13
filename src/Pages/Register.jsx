@@ -93,14 +93,14 @@ const Register = () => {
 
            axios.post("http://eventify-server-sigma.vercel.app/users", newUser)
             .then((res) => {
-                 console.log("Data after user save:", res.data);
-                Swal.fire({
-                    title: 'Success!',
-                    text: 'Logged in with Google!',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-                navigate("/");
+                 //console.log("Data after user save:", res.data);
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Logged in with Google!',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                    navigate("/");
                 })
                 .catch((err) => {
                     console.error("Error saving user:", err);
