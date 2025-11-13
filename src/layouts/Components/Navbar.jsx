@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { FaUserCircle } from "react-icons/fa";
-import { Moon, Sun } from "lucide-react"; // ✅ Make sure these are imported
+import { FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
+import { Moon, Sun } from "lucide-react";
 import { AuthContext } from "../../Provider/AuthProvider";
 import logo from "../../assets/logo.jpg";
 
@@ -9,6 +9,7 @@ const Navbar = ({ theme, toggleTheme }) => {
   const { user, logOut } = useContext(AuthContext);
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logOut()
@@ -30,8 +31,8 @@ const Navbar = ({ theme, toggleTheme }) => {
         </span>
       </Link>
 
-      {/* Navigation Links */}
-      <div className="flex items-center gap-6">
+      {/* ====== Desktop Links ====== */}
+      <div className="hidden md:flex items-center gap-6">
         <NavLink
           to="/"
           className={({ isActive }) =>
@@ -62,7 +63,7 @@ const Navbar = ({ theme, toggleTheme }) => {
           {theme === "light" ? <Moon /> : <Sun />}
         </button>
 
-        {/* Conditional Login/Logout */}
+        {/* Login / Profile */}
         {!user ? (
           <Link
             to="/auth/login"
@@ -72,7 +73,6 @@ const Navbar = ({ theme, toggleTheme }) => {
           </Link>
         ) : (
           <div className="relative">
-            {/* Profile section */}
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="flex items-center gap-2 focus:outline-none"
@@ -88,7 +88,7 @@ const Navbar = ({ theme, toggleTheme }) => {
               )}
             </button>
 
-            {/* Dropdown Menu */}
+            {/* Dropdown */}
             {isDropdownOpen && (
               <div
                 className="absolute right-0 mt-3 w-44 bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-lg shadow-lg overflow-hidden transition-colors duration-300"
@@ -130,6 +130,87 @@ const Navbar = ({ theme, toggleTheme }) => {
           </div>
         )}
       </div>
+
+      {/* ====== Mobile Menu Button ====== */}
+      <div className="flex md:hidden items-center gap-3">
+        <button
+          onClick={toggleTheme}
+          className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-yellow-400"
+        >
+          {theme === "light" ? <Moon /> : <Sun />}
+        </button>
+
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="text-2xl text-gray-700 dark:text-gray-300"
+        >
+          {menuOpen ? <FaTimes /> : <FaBars />}
+        </button>
+      </div>
+
+      {/* ====== Mobile Menu (Dropdown) ====== */}
+      {menuOpen && (
+        <div className="absolute top-16 left-0 w-full bg-white dark:bg-gray-900 flex flex-col items-center gap-4 py-6 border-t dark:border-gray-700 md:hidden">
+          <NavLink
+            to="/"
+            onClick={() => setMenuOpen(false)}
+            className="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400"
+          >
+            Home
+          </NavLink>
+
+          <NavLink
+            to="/upcoming"
+            onClick={() => setMenuOpen(false)}
+            className="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400"
+          >
+            Upcoming Events
+          </NavLink>
+
+          {!user ? (
+            <Link
+              to="/auth/login"
+              onClick={() => setMenuOpen(false)}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 dark:hover:bg-green-500 transition"
+            >
+              Login
+            </Link>
+          ) : (
+            <>
+              <Link
+                to="/create-event"
+                onClick={() => setMenuOpen(false)}
+                className="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400"
+              >
+                Create Event
+              </Link>
+              <Link
+                to="/manage-event"
+                onClick={() => setMenuOpen(false)}
+                className="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400"
+              >
+                Manage Events
+              </Link>
+              <Link
+                to="/join-event"
+                onClick={() => setMenuOpen(false)}
+                className="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400"
+              >
+                Joined Events
+              </Link>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setMenuOpen(false);
+                }}
+                className="text-red-500 hover:text-red-600"
+              >
+                Logout
+              </button>
+            </>
+          )}
+        </div>
+      )}
     </nav>
   );
 };

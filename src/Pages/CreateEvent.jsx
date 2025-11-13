@@ -49,21 +49,22 @@ const CreateEvent = () => {
     };
 
     try {
-      const res = await axios.post("http://eventify-server-sigma.vercel.app/events", newEvent);
+      const res = await axios.post("http://localhost:3000/events", newEvent);
       if(res.data.insertedId || res.status === 201) {
         Swal.fire({
-          icon: "success",
-          title: "Event Created",
-          text: "Your event has been created successfully!",
-        }).then(() => navigate("/upcoming"));
-      }
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Failed",
-        text: `Something went wrong. Please try again. ${error.message}`,
-      });
-    }
+            icon: "success",
+            title: "Event Created",
+            text: "Your event has been created successfully!",
+          }).then(() => navigate("/upcoming"));
+        }
+    } 
+    catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: `Something went wrong. Please try again. ${error.message}`,
+        });
+     }
   };
 
   return (
@@ -166,8 +167,7 @@ const CreateEvent = () => {
           </div>
 
           {/* Submit Button */}
-          <button
-            type="submit"
+          <button type="submit"
             className="w-full bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:shadow-lg dark:shadow-gray-700 dark:hover:shadow-gray-600 transition-all duration-300"
           >
             Create Event
