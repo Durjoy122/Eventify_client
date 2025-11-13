@@ -174,27 +174,11 @@ const Login = () => {
         </div>
 
         <button
-          type="button"
-          onClick={handleGoogleLogin}
-          className="w-full flex items-center justify-center gap-3 border border-gray-300 dark:border-gray-600 py-2 rounded-lg 
-                     hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-200 font-medium text-gray-700 dark:text-gray-200"
-        >
-          <img
-            src="https://www.svgrepo.com/show/475656/google-color.svg"
-            alt="Google"
-            className="w-5 h-5"
-          />
-          Continue with Google
-        </button>
+          type="button" onClick={handleGoogleLogin} className="w-full flex items-center justify-center gap-3 border border-gray-300 dark:border-gray-600 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-200 font-medium text-gray-700 dark:text-gray-200">
+          <img src="https://www.svgrepo.com/show/475656/google-color.svg"alt="Google"className="w-5 h-5"/>Continue with Google</button>
 
-        <p className="text-center text-gray-600 dark:text-gray-300 mt-6 text-sm">
-             Don’t have an account?{" "}
-          <Link
-            to="/auth/register"
-            className="text-blue-600 dark:text-blue-400 font-medium hover:underline"
-          >
-            Register
-          </Link>
+        <p className="text-center text-gray-600 dark:text-gray-300 mt-6 text-sm"> Don’t have an account?{" "}
+          <Link to="/auth/register"className="text-blue-600 dark:text-blue-400 font-medium hover:underline"> Register</Link>
         </p>
       </form>
     </div>
