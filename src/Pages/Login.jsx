@@ -65,7 +65,7 @@ const Login = () => {
           photoURL: loggedUser.photoURL,
         };
 
-        axios.post("http://localhost:3000/users", newUser)
+        axios.post("http://eventify-server-sigma.vercel.app/users", newUser)
           .then(() => {
             Swal.fire({
               title: 'Success!',
